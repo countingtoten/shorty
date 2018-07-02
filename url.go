@@ -1,6 +1,10 @@
 package shorty
 
+type LongURL = string
+
+type ShortURL = string
+
 type URL struct {
-	Long  string
-	Short string
+	LongURL
+	ShortURL
 }

@@ -30,6 +30,8 @@ var _ = Describe("Handler", func() {
 	})
 
 	Describe("GET /shorturl", func() {
-
+		BeforeEach(func() {
+			r, _ := http.NewRequest("GET", "/abcdef", nil)
+		})
 	})
 })

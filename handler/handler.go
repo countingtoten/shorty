@@ -8,8 +8,8 @@ import (
 )
 
 type Handler struct {
-	UserData  map[shorty.UserID]shorty.URL
-	ShortURLs map[string]shorty.URL
+	UserData  map[shorty.UserID]*shorty.User
+	ShortURLs map[shorty.ShortURL]*shorty.URL
 	zerolog.Logger
 }
 

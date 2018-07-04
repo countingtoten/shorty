@@ -9,7 +9,8 @@ A URL shortener written in Go
 {
   "user_id": 1,
   "url": "https://example.com"
-}```
+}
+```
 
 ## GET shorty/shorturl
 

@@ -41,7 +41,7 @@ func main() {
 	}
 
 	go func() {
-		logger.Info().Msg("Shorty started")
+		logger.Info().Str("bind_address", addr).Msg("Shorty started")
 		err = server.ListenAndServe()
 		if err != nil {
 			logger.Fatal().Err(err)

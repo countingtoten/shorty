@@ -2,6 +2,7 @@ package memory
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/countingtoten/shorty"
 	"github.com/countingtoten/shorty/rand"
@@ -16,6 +17,7 @@ type Datastore struct {
 	shorty.Config
 	UserData   map[shorty.UserID]*shorty.User
 	ShortCodes map[shorty.ShortCode]*shorty.URL
+	sync.RWMutex
 }
 
 func NewDatastore(cfg shorty.Config) *Datastore {
@@ -23,6 +25,7 @@ func NewDatastore(cfg shorty.Config) *Datastore {
 		Config:     cfg,
 		UserData:   map[shorty.UserID]*shorty.User{},
 		ShortCodes: map[shorty.ShortCode]*shorty.URL{},
+		RWMutex:    sync.RWMutex{},
 	}
 }
 
@@ -30,6 +33,9 @@ func (d *Datastore) CreateShortURL(id shorty.UserID, url shorty.LongURL) (shorty
 	user := d.GetUser(id)
 
 	shortCode := d.NewShortCode()
+
+	d.Lock()
+	defer d.Unlock()
 
 	newURL := &shorty.URL{
 		ShortCode: shortCode,
@@ -46,6 +52,9 @@ func (d *Datastore) CreateShortURL(id shorty.UserID, url shorty.LongURL) (shorty
 }
 
 func (d *Datastore) GetLongURL(url shorty.ShortCode) (shorty.LongURL, error) {
+	d.RLock()
+	defer d.RUnlock()
+
 	data, ok := d.ShortCodes[url]
 	if !ok {
 		return "", nil
@@ -55,6 +64,9 @@ func (d *Datastore) GetLongURL(url shorty.ShortCode) (shorty.LongURL, error) {
 }
 
 func (d *Datastore) GetUser(id shorty.UserID) *shorty.User {
+	d.Lock()
+	defer d.Unlock()
+
 	user, ok := d.UserData[id]
 
 	if !ok {

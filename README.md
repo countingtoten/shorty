@@ -1,9 +1,9 @@
 # Shorty
 A URL shortener written in Go
 
-# Startup
+# Getting Started
 
-Start shorty by using docker-compose or by building a docker image. Shorty will bind to port 3000 by default.
+Run shorty by using docker-compose or by building a docker image. Shorty binds to port 3000 by default.
 
 ## Docker Compose
 
@@ -44,6 +44,32 @@ Create a post request to localhost:3000/new to creates a new short URL associate
 }
 ```
 
-## GET localhost:3000/abcdef
+## GET localhost:3000/shortcode
 
-Accessing the returned short URL redirects to its long URL.
+Accessing the returned short URL redirects to its original long URL.
+
+# Directory Structure
+
+```
+shorty/
+  cmd/
+    shorty/ # Home of the executable
+
+  handler/ # The request handler for the server. It creates
+           # and resolves short url codes through a datastore
+           # member of its struct.
+
+  in-memory/ # An in memory implementation of the datastore
+             # interface
+
+  mocks/ # The github.com/vektra/mockery generated mocks
+
+  rand/ # A helper package to generate random short url codes
+
+  datastore.go # The interface for creating new short urls
+               # and resolving short urls to their original
+               # url
+
+  url.go  # Models for storing the short url code and user
+  user.go # information in the datastore.
+```
